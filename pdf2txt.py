@@ -4,7 +4,7 @@
 # @Version : 1.0  
 # @Time    : 2019/7/4
 # @Author  : 圈圈烃
-# @File    : pdf2txt
+# @File    : pdf2txt_2
 # @Description:
 #
 #
@@ -13,7 +13,7 @@
 
 import sys
 import importlib
-import requests
+import os
 
 importlib.reload(sys)
 
@@ -35,6 +35,7 @@ def parse(readPath, savePath):
     # 连接分析器 与文档对象
     praser.set_document(doc)
     doc.set_parser(praser)
+
     # 提供初始化密码
     # 如果没有密码 就创建一个空的字符串
     doc.initialize()
@@ -62,41 +63,40 @@ def parse(readPath, savePath):
                 if (isinstance(out, LTTextBoxHorizontal)):
                     with open(savePath, 'a+', encoding='utf-8') as f:
                         results = out.get_text()
-                        print(results)
+                        # print(results)
                         f.write(results + '\n')
 
 
-def aconvert(filename, filepath):
-    "https://www.aconvert.com/cn/pdf/"
-    post_pdf_url = 'https://s2.aconvert.com/convert/convert-batch-win.php'
-    headers = {
-        'Host': 's2.aconvert.com',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
-        'Accept': '*/*',
-        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Referer': 'https://www.aconvert.com/cn/pdf/',
-        'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary99PEndn49fN432TM',
-        'Content-Length': '738436',
-        'Origin': 'https://www.aconvert.com',
-        'Connection': 'keep-alive',
-        'Pragma': 'no-cache',
-        'Cache-Control': 'no-cache',
-    }
-    files = {
-        'file': (filename, open(filepath, 'rb'), 'application/pdf'),
-    }
-    data = {
-        'targetformat': 'txt',
-        'filelocation': 'local',
-    }
-    res = requests.post(post_pdf_url, headers=headers, files=files, data=data)
-    print(res.text)
+def eachFile(path):
+    """批量转化pdf2txt"""
+    fileNames = os.listdir(path)
+    for file in fileNames:
+        newDir = path + '/' + file
+        if os.path.isfile(newDir):
+            readPath = newDir
+            savePath = readPath.replace('文本数据试图爬虫', 'TxT').replace('pdf', 'txt').replace('PDF', 'txt')
+            try:
+                parse(readPath, savePath)
+                print(savePath.split('/')[-1] + '转化成功...')
+            except Exception as e:
+                print(readPath + '转化失败！！！')
+                print(e)
+        else:
+            eachFile(newDir)
+            try:
+                os.mkdir(newDir.replace('文本数据试图爬虫', 'TxT') + '/')
+            except Exception as e:
+                print(e)
+
+
+def main():
+    path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\文本数据试图爬虫'
+    eachFile(path)
 
 
 if __name__ == '__main__':
-    readPath = r'E:\QuanQTing Files\Documents\Code\Python Project\Company_Annual_Report_Analysis_TF\000027深圳能源：2016年度社会责任报告2017-04-08(2)(1).PDF'
-    filename = readPath.split('\\')[-1]
-    savePath = readPath.replace('PDF', 'txt').replace('pdf', 'txt')
-    aconvert(filename, readPath)
-    parse(readPath, savePath)
+    main()
+    # # readPath = r'社会责任报告\000027深圳能源\000027深圳能源：2018年度社会责任报告.PDF'
+    # readPath = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\文本数据试图爬虫\年报数据\000027深圳能源\000027深圳能源2018年年度报告-2019.PDF'
+    # savePath = readPath.replace('PDF', 'txt').replace('pdf', 'txt')
+    # parse(readPath, savePath)

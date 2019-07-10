@@ -11,6 +11,7 @@
 import os
 import jieba
 import jieba.analyse
+import synonyms
 
 rule1 = ['环保理念', '环保方针', '环保政策', '环保制度', '环保管理部门', '污染控制部门', '环保管理岗位',
          '环保目标', '环境体系认证', '清洁生产', '环保培训', '环保教育', '环保信息交流', ]
@@ -65,7 +66,9 @@ def main():
     # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\社会责任报告\000027深圳能源\000027深圳能源：2014年度社会责任报告.txt'
     # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\年报数据\000027深圳能源\000027深圳能源2014年年度报告-20150327.txt'
     # scoreRule(path)
-    eachFile(path)
+    # eachFile(path)
+    sy = synonyms.nearby('固废')
+    print(sy)
 
 
 if __name__ == '__main__':

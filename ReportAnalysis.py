@@ -65,8 +65,8 @@ def eachFile(path):
 
 
 def main():
-    # path = r'F:\\Users\\QQT\\Documents\\Python Projects\\Company_Annual_Report_Analysis_TF\\TxT'
-    path = r'E:\QuanQTing Files\Documents\Code\Python Project\Company_Annual_Report_Analysis_TF\TxT'
+    path = r'F:\\Users\\QQT\\Documents\\Python Projects\\Company_Annual_Report_Analysis_TF\\TxT'
+    # path = r'E:\QuanQTing Files\Documents\Code\Python Project\Company_Annual_Report_Analysis_TF\TxT'
     # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\社会责任报告\000027深圳能源\000027深圳能源：2014年度社会责任报告.txt'
     # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\年报数据\000027深圳能源\000027深圳能源2014年年度报告-20150327.txt'
     # scoreRule(path)

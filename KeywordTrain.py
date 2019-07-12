@@ -34,7 +34,7 @@ def train_model(filePath, modelSavePath):
     """训练模型"""
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
     sentences = word2vec.Text8Corpus(filePath)  # 加载语料
-    model = gensim.models.Word2Vec(sentences, size=200, window=10)
+    model = gensim.models.Word2Vec(sentences, sg=1, size=200, window=5)
     model.save(modelSavePath)
     model.wv.save_word2vec_format(modelSavePath + '.bin', binary=True)  # 以二进制类型保存模型以便重用
 

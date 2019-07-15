@@ -74,7 +74,7 @@ def eachFile(path):
         newDir = path + '/' + file
         if os.path.isfile(newDir):
             readPath = newDir
-            savePath = readPath.replace('文本数据试图爬虫', 'TxT').replace('pdf', 'txt').replace('PDF', 'txt')
+            savePath = readPath.replace('筛选', 'TxT').replace('pdf', 'txt').replace('PDF', 'txt')
             try:
                 parse(readPath, savePath)
                 print(savePath.split('/')[-1] + '转化成功...')
@@ -84,13 +84,14 @@ def eachFile(path):
         else:
             eachFile(newDir)
             try:
-                os.mkdir(newDir.replace('文本数据试图爬虫', 'TxT') + '/')
+                os.mkdir(newDir.replace('筛选', 'TxT') + '/')
             except Exception as e:
                 print(e)
 
 
 def main():
-    path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\文本数据试图爬虫'
+    # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\文本数据试图爬虫'
+    path = r'G:\BaiduNetdiskDownload\筛选'
     eachFile(path)
 
 

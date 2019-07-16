@@ -178,20 +178,10 @@ def write_csv(data, filePath, score):
 
 
 def main():
-    path = r'F:\\Users\\QQT\\Documents\\Python Projects\\Company_Annual_Report_Analysis_TF\\TxT'
-    path = r'G:\BaiduNetdiskDownload\TXT\可持续发展报告'
-    path = r'G:\BaiduNetdiskDownload\TXT\社会责任报告'
-    path = r'G:\BaiduNetdiskDownload\TXT\年报合集'
-    path = r'G:\BaiduNetdiskDownload\TXT\年报\2018'
-    path = r'G:\BaiduNetdiskDownload\TXT\公司合并'
     path = r'G:\BaiduNetdiskDownload\TXT\合并后'
-    # path = r'E:\QuanQTing Files\Documents\Code\Python Project\Company_Annual_Report_Analysis_TF\TxT'
-    # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\社会责任报告\000027深圳能源\000027深圳能源：2014年度社会责任报告.txt'
-    # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\年报数据\000027深圳能源\000027深圳能源2014年年度报告-20150327.txt'
     eachFile(path)
     # combineFile(path)
 
 
 if __name__ == '__main__':
     main()
-    # write_csv(filePath="000004国农科技2012年年度报告-20130420.txt", score=2)

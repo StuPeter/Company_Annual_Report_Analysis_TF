@@ -13,6 +13,8 @@ import jieba
 import jieba.analyse
 import csv
 import re
+import operator
+import shutil
 
 rule1 = ['环保理念', '环保方针', '环保政策', '环保制度', ]
 rule2 = ['环保管理部门', '污染控制部门', '环保管理岗位', '环保内控', ]
@@ -53,6 +55,58 @@ ruleList = [rule1, rule2, rule3, rule4, rule5,
             rule26, rule27, ]
 
 
+def combineFile(path):
+    '''合并文件'''
+    sameList = list()
+    stockCodeList = list()
+    stockPathList = list()
+    fileNames = os.listdir(path)
+    # 获取同名同年的报告路径
+    for file in fileNames:
+        newDir = path + '/' + file
+        if os.path.isfile(newDir):
+            stockCode = re.findall(r'([0|3|6|9][0-9]{5})[-|\u4e00-\u9fa5|A-Za-z|\s]', newDir)[0]
+            stockYear = re.findall(r'20[0-1][0-9]', newDir)[0]
+            stockCodeList.append([stockCode, stockYear])
+            # stockYearList.append(stockYear)
+            stockPathList.append(newDir)
+        else:
+            eachFile(newDir)
+    for idx, code1 in enumerate(stockCodeList):
+        same = [idx]
+        for jdx, code2 in enumerate(stockCodeList):
+            if operator.eq(code1, code2):
+                # print(idx, jdx)
+                same.append(jdx)
+        same = list(set(same))
+        # print(same)
+        sameList.append(same)
+    sameList = list(set([tuple(t) for t in sameList]))
+    sameList = [list(v) for v in sameList]
+    print(sameList)
+    # sameList = [[4975]]
+    # 合并txt
+    for path in sameList:
+        if len(path) == 1:
+            shutil.copy(stockPathList[path[0]], stockPathList[path[0]].replace("公司合并", "合并后"))
+            print(stockPathList[path[0]] + "复制成功...")
+        else:
+            content = ""
+            for index in path:
+                filePath = stockPathList[index]
+                with open(filePath, 'r', encoding='utf-8') as fr:
+                    content += fr.read()
+            with open(filePath.replace("公司合并", "合并后"), 'w', encoding='utf-8') as fw:
+                fw.write(content)
+                print(filePath + "合并成功...")
+
+
+    # print(stockPathList[3660], stockPathList[3668])
+    # print(stockPathList[3569], stockPathList[3570])
+    # # print(stockPathList[591], stockPathList[595], stockPathList[596], stockPathList[597], stockPathList[605],
+    # #       stockPathList[606], stockPathList[607])
+
+
 def scoreRuleJieba(path):
     with open(path, 'r', encoding='utf-8') as fr:
         content = fr.read().replace('\n', '').replace(' ', '')
@@ -89,7 +143,7 @@ def eachFile(path):
             data = write_csv(data, newDir, score)
         else:
             eachFile(newDir)
-    with open("2018年报合集_score.csv", "a", newline="", encoding='utf_8_sig') as fw:
+    with open("整合后_score.csv", "a", newline="", encoding='utf_8_sig') as fw:
         f_csv = csv.writer(fw)
         for row in data:
             f_csv.writerow(row)
@@ -129,11 +183,13 @@ def main():
     path = r'G:\BaiduNetdiskDownload\TXT\社会责任报告'
     path = r'G:\BaiduNetdiskDownload\TXT\年报合集'
     path = r'G:\BaiduNetdiskDownload\TXT\年报\2018'
+    path = r'G:\BaiduNetdiskDownload\TXT\公司合并'
+    path = r'G:\BaiduNetdiskDownload\TXT\合并后'
     # path = r'E:\QuanQTing Files\Documents\Code\Python Project\Company_Annual_Report_Analysis_TF\TxT'
     # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\社会责任报告\000027深圳能源\000027深圳能源：2014年度社会责任报告.txt'
     # path = r'F:\Users\QQT\Documents\Python Projects\Company_Annual_Report_Analysis_TF\TxT\年报数据\000027深圳能源\000027深圳能源2014年年度报告-20150327.txt'
-    # scoreRule(path)
     eachFile(path)
+    # combineFile(path)
 
 
 if __name__ == '__main__':
